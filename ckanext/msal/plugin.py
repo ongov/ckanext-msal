@@ -11,7 +11,7 @@ import ckan.lib.helpers as h
 import msal
 
 # Plugin
-import msal_config as msal_config
+from . import msal_config
 
 log = logging.getLogger(__name__)
 application = msal.ConfidentialClientApplication(
