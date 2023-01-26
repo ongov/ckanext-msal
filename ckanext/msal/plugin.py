@@ -93,6 +93,12 @@ def get_a_token():
 
         user = result.get("id_token_claims", {}).get("preferred_username") # email
         user_name = user.lower().replace('.', '_').split('@')[0].strip() # ckan'd username
+        # as of CKAN 2.9.6, user model is called by id not name, so need
+        # to define user_id
+        user_id = model.User.get(user_name).id
+        # CKAN 2.9.6 expects a serial_counter to be passed into environ
+        # Hard-code counter to '1' here
+        user_id = '{},{}'.format( user_id, 1)
 
         # Validate user info.
         if not _validate_email_domains(user):
@@ -107,7 +113,9 @@ def get_a_token():
         # Set the repoze.who cookie to match a given user_id
         if u'repoze.who.plugins' in request.environ:
             rememberer = request.environ[u'repoze.who.plugins'][u'friendlyform']
-            identity = {u'repoze.who.userid': user_name}
+            # pass user_id and not user_name to identity to be compatible with
+            # breaking changes introduced in ckan 2.9.6
+            identity = {u'repoze.who.userid': user_id}
             resp.headers.extend(rememberer.remember(request.environ, identity))
     except Exception as e:
         log.error('Exception raised. Unable to authenticate user. {}'
