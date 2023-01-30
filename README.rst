@@ -5,7 +5,7 @@ ckanext-msal
 .. Put a description of your extension here:
    What does it do? What features does it have?
    Consider including some screenshots or embedding a video!
-
+A CKAN Extension for Azure Active Directory authentication using `MSAL <https://github.com/AzureAD/microsoft-authentication-library-for-js/wiki/MSAL-Installation>`_, compatible with CKAN 2.9.6 and CKAN 2.9.7.
 
 ------------
 Requirements
@@ -35,9 +35,11 @@ To install ckanext-msal:
    config file (by default the config file is located at
    ``/etc/ckan/default/production.ini``).
 
-4. Restart CKAN. For example if you've deployed CKAN with Apache on Ubuntu::
+4. Edit `msal_config.py <https://github.com/ongov/ckanext-msal/blob/ckan_2.9.7_compatible/ckanext/msal/msal_config.py>`_ and replace the generic values with your specific credentials.
 
-     sudo service apache2 reload
+5.  Restart CKAN. For example if you've deployed CKAN on Ubuntu::
+
+     sudo service supervisor restart
 
 
 ---------------
